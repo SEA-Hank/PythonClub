@@ -1,0 +1,13 @@
+.res-table td {
+  text-align: center;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+.res-des {
+  width: 300px;
+}
+
+.bgcolor {
+  background-color: #eee;
+}
