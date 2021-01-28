@@ -1,4 +1,5 @@
-.res-table td {
+.res-table td,
+.met-table td {
   text-align: center;
   border: 1px solid #cccccc;
   padding: 10px;
@@ -10,4 +11,8 @@
 
 .bgcolor {
   background-color: #eee;
+}
+
+.met-bgcolor {
+  background-color: beige;
 }
