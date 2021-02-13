@@ -16,3 +16,10 @@
 .met-bgcolor {
   background-color: beige;
 }
+
+.thx-for-add {
+  padding: 10px 0px;
+  font-weight: bold;
+  color: green;
+  font-style: italic;
+}
