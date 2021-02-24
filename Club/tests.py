@@ -2,9 +2,10 @@ from django.test import TestCase
 from .models import Meeting, Minute, Resource, Event
 from django.contrib.auth.models import User
 import datetime
-from .views import index, getMeeting, meetingDetails
+from .views import newResource
 from django.urls import reverse
 from django.utils import timezone
+from .forms import ResourceForm
 # Testing models
 
 
@@ -94,3 +95,44 @@ class MeetingDetailsTest(TestCase):
     def test_number_of_meeting(self):
         meetingCount = Meeting.objects.count()
         self.assertEqual(meetingCount, 2)
+
+
+class FormTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.testUser = User.objects.create(
+            username='hank', password="123456789Qwer!")
+
+    def test_resource_form_request_login(self):
+        response = self.client.get('/club/newResource')
+        self.assertRedirects(
+            response, '/accounts/login/?next=/club/newResource')
+
+    def test_resource_form_is_valid(self):
+        form = ResourceForm(
+            data={'name': "test_resource",
+                  'type': "test type",
+                  "URL": "www.test.com",
+                  "description": "test description",
+                  "userid": self.testUser,
+                  "date": "2021-01-28"})
+        self.assertTrue(form.is_valid())
+
+    def test_resource_form_templates_used(self):
+        # login
+        self.client.force_login(self.testUser)
+        response = self.client.get('/club/newResource')
+        self.assertTemplateUsed("club/newResource.html")
+
+    def test_resource_form_templates_context(self):
+        # login
+        self.client.force_login(self.testUser)
+        response = self.client.get('/club/newResource')
+        self.assertFalse(response.context["isSaveOne"])
+        form = ResourceForm()
+        self.assertContains(response, form.as_table())
+
+    def test_resource_form_view(self):
+        self.client.force_login(self.testUser)
+        response = self.client.get('/club/newResource')
+        self.assertEqual(response.resolver_match.func, newResource)

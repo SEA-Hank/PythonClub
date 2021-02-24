@@ -3,3 +3,6 @@ password:123456789
 
 hank 
 123456789qwer!
+
+
+python3 manage.py test -v 2
